@@ -1,0 +1,90 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f0e6d2; /* Light beige background for the entire body */
+        font-family: 'Georgia', serif; /* Serif font for a classic look */
+    }
+
+    .notebook-container {
+        background: #fff7e6; /* Light cream background for the notebook container */
+        padding: 20px; /* Padding around the container */
+        border: 1px solid #ccc; /* Subtle border */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+        margin-top: 40px; /* Space above the notebook */
+    }
+    
+    .notebook-note {
+        background: #fff; /* White background for notes */
+        padding: 15px; /* Padding inside each note */
+        margin-bottom: 10px; /* Space between notes */
+        border-radius: 4px; /* Rounded corners for notes */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for notes */
+        position: relative; /* Relative positioning for hover effect */
+        transition: background-color 0.3s; /* Smooth transition for hover */
+    }
+
+    .notebook-note:hover {
+        background-color: #ffebc1; /* Change background color on hover */
+    }
+
+    .notebook-note:before {
+        content: ""; /* Create a decorative element */
+        position: absolute; /* Position it absolutely within the note */
+        left: 0; /* Align to the left */
+        top: 50%; /* Center vertically */
+        height: 40%; /* Height of the decorative line */
+        width: 5px; /* Width of the line */
+        background: #007bff; /* Blue left border for emphasis */
+        border-radius: 3px; /* Rounded corners for the line */
+        transform: translateY(-50%); /* Center the line */
+    }
+
+    h2 {
+        color: #333; /* Dark color for the title */
+        margin-bottom: 20px; /* Space below title */
+    }
+
+    .button-group .btn {
+        margin-left: 10px; /* Space between buttons */
+    }
+</style>
+
+<div class="container mt-4 notebook-container">
+    <h2 class="text-center">Your Notes</h2>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <ul class="list-group">
+                {% for note in notes %}
+                <li class="list-group-item notebook-note d-flex justify-content-between align-items-center">
+                    <span class="note-info">
+                        {{ note.created_at|date:"F d, Y H:i" }} - {{ note.note }}
+                    </span>
+                    <span class="button-group">
+                        <a href="{% url 'detail' note.id %}" class="btn btn-sm btn-outline-primary me-2">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                        <a href="{% url 'edit-note' note.id %}" class="btn btn-sm btn-outline-secondary me-2">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form method="post" action="{% url 'delete-note' note.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </form>
+                    </span>
+                </li>
+                {% empty %}
+                    <li class="list-group-item text-center notebook-note">No notes available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<style>
+    
+</style>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f0e6d2; /* Light beige background for the entire body */
+        font-family: 'Georgia', serif; /* Serif font for a classic look */
+    }
+
+    .note-card {
+        background: #fff7e6; /* Light cream background for the note card */
+        padding: 20px; /* Padding inside the card */
+        border: 1px solid #ccc; /* Subtle border */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+        transition: transform 0.2s; /* Smooth transform effect */
+    }
+
+    .note-card:hover {
+        transform: scale(1.02); /* Slightly scale up on hover */
+    }
+
+    .note-title {
+        color: #333; /* Dark color for the title */
+    }
+
+    .note-text {
+        transition: text-shadow 0.3s; /* Smooth transition for text shadow */
+    }
+
+    .note-text:hover {
+        text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00; /* Glow effect on hover */
+    }
+
+    .button-group .btn {
+        margin-left: 10px; /* Space between buttons */
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card note-card shadow-sm mb-4">
+                <div class="card-header text-center">
+                    <h3 class="note-title">Note Details</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Created On: {{ note.created_at|date:"F d, Y H:i" }}</h5>
+                    <p class="card-text note-text">{{ note.note }}</p>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'edit-note' note.id %}" class="btn btn-primary">Edit Note</a>
+                        <form method="post" action="{% url 'delete-note' note.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete Note</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="{% url 'notes_list' %}" class="btn btn-secondary">Back to Notes</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

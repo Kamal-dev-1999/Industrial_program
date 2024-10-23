@@ -1,0 +1,23 @@
+<!-- edit_note.html -->
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header text-center">
+            <h2>Edit Note</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="note" class="form-label">Your Note</label>
+                    {{ form.note }}  <!-- Render the note field directly -->
+                </div>
+                <button type="submit" class="btn btn-success btn-block mt-3">Update Note</button>
+                <a href="{% url 'notes_list' %}" class="btn btn-secondary btn-block mt-2">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
